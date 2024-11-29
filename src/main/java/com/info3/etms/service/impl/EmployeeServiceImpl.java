@@ -1,5 +1,6 @@
 package com.info3.etms.service.impl;
 
+import com.info3.etms.mapper.EmployeeMapper;
 import com.info3.etms.model.Employee;
 import com.info3.etms.repository.EmployeeRepository;
 import com.info3.etms.service.EmployeeService;
@@ -15,6 +16,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
 
+    private final EmployeeMapper employeeMapper;
+
 //    @Autowired
 //    public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
 //        this.employeeRepository = employeeRepository;
@@ -28,10 +31,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee updateEmployee(Long id, Employee employee) {
         return employeeRepository.findById(id).map(existingEmployee -> {
-            existingEmployee.setFirstName(employee.getFirstName());
+            /*existingEmployee.setFirstName(employee.getFirstName());
             existingEmployee.setLastName(employee.getLastName());
             existingEmployee.setEmail(employee.getEmail());
-            existingEmployee.setPosition(employee.getPosition());
+            existingEmployee.setPosition(employee.getPosition());*/
+            employeeMapper.updateEmployeeFromDto(existingEmployee, employee);
             return employeeRepository.save(existingEmployee);
         }).orElseThrow(() -> new RuntimeException("Employee not found with ID: " + id));
     }
