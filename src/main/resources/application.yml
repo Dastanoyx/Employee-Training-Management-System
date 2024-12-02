@@ -1,0 +1,27 @@
+server:
+  port: 8080 # API Gateway runs on port 8080
+
+spring:
+  application:
+    name: api-gateway
+
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true # Enable Eureka service discovery
+          lower-case-service-id: true # Ensure service IDs are lowercase
+      routes:
+        - id: employee-service
+          uri: lb://employee-training-management-system # Load balance using Eureka
+          predicates:
+            - Path=/api/employees/**
+
+        - id: employee-service
+          uri: lb://employee-training-management-system # Load balance using Eureka
+          predicates:
+            - Path=/api/employees/**
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
